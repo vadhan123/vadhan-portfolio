@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vadhan Ganji — AI/ML Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --accent:#3b82f6;--accent2:#60a5fa;
+  --glow:rgba(59,130,246,0.28);--dim:rgba(59,130,246,0.1);
+  --bg:#04070f;--bg2:#080f1e;--bg3:#0e1729;
+  --border:rgba(59,130,246,0.13);
+  --text:#eef2ff;--text2:#8fa3cc;--text3:#3d5280;
+  --card:rgba(8,15,30,0.88);--nav:64px;--r:14px;
+}
+[data-theme="light"]{
+  --bg:#f0f4ff;--bg2:#e4eaf8;--bg3:#d8e0f2;
+  --border:rgba(59,130,246,0.18);
+  --text:#06091a;--text2:#2d3f6b;--text3:#8899bb;
+  --card:rgba(255,255,255,0.94);--glow:rgba(59,130,246,0.14);--dim:rgba(59,130,246,0.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background .3s,color .3s}
+
+/* grid + noise */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:56px 56px;opacity:.45;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1.2rem,5vw,4rem);
+  background:rgba(4,7,15,.82);backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--border);transition:background .3s}
+[data-theme="light"] nav{background:rgba(240,244,255,.88)}
+.logo{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.4rem;color:var(--accent);letter-spacing:.02em}
+.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links a{font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text2);text-decoration:none;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--accent)}
+.nav-r{display:flex;align-items:center;gap:.8rem}
+.theme-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);
+  background:var(--dim);color:var(--accent);cursor:pointer;font-size:.95rem;
+  display:flex;align-items:center;justify-content:center;transition:.2s}
+.theme-btn:hover{background:var(--glow);transform:scale(1.1)}
+.btn-hire{padding:.42rem 1.1rem;border-radius:8px;background:var(--accent);color:#fff;
+  font-size:.76rem;font-weight:700;letter-spacing:.08em;text-decoration:none;transition:.2s}
+.btn-hire:hover{opacity:.82;transform:translateY(-1px)}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.burger span{width:22px;height:2px;background:var(--text2);border-radius:2px;display:block;transition:.3s}
+.mob-menu{display:none;position:fixed;top:var(--nav);left:0;right:0;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:1.5rem;flex-direction:column;gap:1.2rem;z-index:199}
+.mob-menu.open{display:flex}
+.mob-menu a{color:var(--text);text-decoration:none;font-weight:700;font-size:1rem}
+
+/* HERO */
+.hero{position:relative;z-index:1;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:calc(var(--nav)+2rem) clamp(1.5rem,5vw,4rem) 4rem;text-align:center;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;animation:pulse 7s ease-in-out infinite}
+.o1{width:520px;height:520px;background:radial-gradient(circle,rgba(59,130,246,.2),transparent 70%);top:-100px;left:-120px}
+.o2{width:380px;height:380px;background:radial-gradient(circle,rgba(99,102,241,.14),transparent 70%);bottom:0;right:-60px;animation-delay:3s}
+@keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+
+.badge{display:inline-flex;align-items:center;gap:.5rem;padding:.38rem 1rem;border-radius:100px;
+  border:1px solid var(--border);background:var(--dim);
+  font-family:'DM Mono',monospace;font-size:.7rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:1.8rem;animation:fu .8s .1s both}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+
+.hero-photo-area{margin-bottom:1.8rem;animation:fu .8s .15s both}
+.photo-ring{width:136px;height:136px;border-radius:50%;border:2px solid var(--accent);
+  box-shadow:0 0 32px var(--glow);background:var(--bg3);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  cursor:pointer;margin:0 auto;transition:box-shadow .3s;position:relative}
+.photo-ring:hover{box-shadow:0 0 56px var(--glow)}
+.photo-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.photo-ring .upload-hint{font-size:.62rem;color:var(--text3);font-family:'DM Mono',monospace;margin-top:.3rem}
+#photo-inp{display:none}
+
+.hname{font-family:'Instrument Serif',serif;font-size:clamp(3.2rem,9vw,7.8rem);line-height:.93;
+  letter-spacing:-.03em;animation:fu .8s .2s both}
+.hname .stroke{color:transparent;-webkit-text-stroke:1.5px var(--accent)}
+.htitle{font-family:'DM Mono',monospace;font-size:clamp(.82rem,2vw,1rem);
+  color:var(--accent);letter-spacing:.2em;text-transform:uppercase;
+  margin:1.1rem 0 1.5rem;animation:fu .8s .3s both}
+.hbio{max-width:560px;font-size:clamp(.92rem,2vw,1.05rem);color:var(--text2);line-height:1.8;
+  animation:fu .8s .4s both}
+.hbtns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:2rem;animation:fu .8s .5s both}
+.btn-p{padding:.72rem 2rem;border-radius:10px;background:var(--accent);color:#fff;
+  font-weight:700;font-size:.88rem;letter-spacing:.05em;text-decoration:none;
+  transition:.2s;box-shadow:0 0 0 var(--glow)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--glow)}
+.btn-g{padding:.72rem 2rem;border-radius:10px;background:transparent;color:var(--text);
+  font-weight:600;font-size:.88rem;text-decoration:none;border:1px solid var(--border);transition:.2s}
+.btn-g:hover{background:var(--dim);transform:translateY(-2px)}
+
+.scroll-cue{margin-top:3.5rem;display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  color:var(--text3);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  font-family:'DM Mono',monospace;animation:fu .8s .8s both}
+.scl{width:1px;height:44px;background:linear-gradient(to bottom,var(--accent),transparent);animation:sd 2s ease-in-out infinite}
+@keyframes sd{0%{opacity:0;transform:scaleY(0);transform-origin:top}50%{opacity:1;transform:scaleY(1)}100%{opacity:0;transform:scaleY(0);transform-origin:bottom}}
+@keyframes fu{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTIONS */
+section{position:relative;z-index:1;padding:6rem clamp(1.5rem,5vw,4rem)}
+.stag{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem}
+.stitle{font-family:'Instrument Serif',serif;font-size:clamp(2rem,5vw,3rem);line-height:1.1;letter-spacing:-.02em;color:var(--text);margin-bottom:.9rem}
+.ssub{color:var(--text2);font-size:.98rem;max-width:520px;line-height:1.75}
+.reveal{opacity:0;transform:translateY(38px);transition:opacity .7s,transform .7s}
+.reveal.vis{opacity:1;transform:none}
+
+/* SKILLS */
+.skills-sec{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.skills-hdr{text-align:center;margin-bottom:3.5rem}
+.skills-hdr .ssub{margin:0 auto}
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.4rem;max-width:1140px;margin:0 auto}
+.cat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.8rem;
+  backdrop-filter:blur(14px);transition:.25s}
+.cat-card:hover{transform:translateY(-4px);box-shadow:0 18px 42px var(--glow);border-color:var(--accent)}
+.cat-head{display:flex;align-items:center;gap:.8rem;margin-bottom:1.3rem}
+.cat-icon{font-size:1.6rem}
+.cat-card h3{font-size:.95rem;font-weight:700;color:var(--text)}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem}
+.tag{display:inline-flex;align-items:center;gap:.35rem;padding:.26rem .7rem;border-radius:6px;
+  background:var(--dim);color:var(--accent);font-family:'DM Mono',monospace;font-size:.68rem;
+  letter-spacing:.04em;border:1px solid var(--border);white-space:nowrap}
+.tag img,.tag svg{width:14px;height:14px;object-fit:contain;flex-shrink:0}
+
+/* SKILL ICONS via SVG/img devicons */
+.ico{display:inline-flex;align-items:center}
+
+/* PROJECTS */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.4rem;margin-top:3rem}
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:2rem;
+  backdrop-filter:blur(12px);display:flex;flex-direction:column;gap:.9rem;transition:.25s;position:relative;overflow:hidden}
+.pcard::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--dim),transparent);opacity:0;transition:.3s}
+.pcard:hover{transform:translateY(-5px);box-shadow:0 22px 52px var(--glow);border-color:var(--accent)}
+.pcard:hover::before{opacity:1}
+.pnum{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--accent);letter-spacing:.1em}
+.pcard h3{font-size:1.05rem;font-weight:700;color:var(--text)}
+.pcard p{font-size:.86rem;color:var(--text2);line-height:1.65;flex:1}
+.pfoot{display:flex;align-items:center;justify-content:space-between}
+.plang{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--text3);display:flex;align-items:center;gap:.38rem}
+.ldot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.plink{color:var(--accent);font-size:.78rem;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:.3rem;transition:gap .2s}
+.plink:hover{gap:.6rem}
+
+/* EXPERIENCE */
+.exp-sec{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.timeline{max-width:780px;margin:3rem auto 0;position:relative}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent),transparent)}
+.titem{padding-left:2.6rem;padding-bottom:3rem;position:relative}
+.titem::before{content:'';position:absolute;left:-5px;top:7px;width:11px;height:11px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 14px var(--glow)}
+.tdate{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--accent);letter-spacing:.1em;margin-bottom:.4rem}
+.trole{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.2rem}
+.tco{font-size:.88rem;color:var(--text2);margin-bottom:.9rem}
+.titem ul{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.titem li{font-size:.88rem;color:var(--text2);line-height:1.6;padding-left:1.2rem;position:relative}
+.titem li::before{content:'→';position:absolute;left:0;color:var(--accent)}
+
+/* EDUCATION */
+.edu-card{max-width:640px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:2.2rem 2.4rem;backdrop-filter:blur(14px);margin-top:2.5rem;
+  display:flex;gap:1.8rem;align-items:flex-start;transition:.25s}
+.edu-card:hover{box-shadow:0 16px 40px var(--glow)}
+.eico{font-size:2.2rem;flex-shrink:0}
+.edeg{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.3rem}
+.esc{font-size:.95rem;color:var(--accent);margin-bottom:.3rem}
+.eyr{font-family:'DM Mono',monospace;font-size:.73rem;color:var(--text3);letter-spacing:.08em}
+
+/* CONTACT */
+.con-sec{text-align:center}
+.con-sec .ssub{margin:0 auto 3rem}
+.cg{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-bottom:2.5rem}
+.ccard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:1.3rem 1.8rem;backdrop-filter:blur(12px);text-decoration:none;
+  display:flex;align-items:center;gap:.9rem;transition:.25s}
+.ccard:hover{transform:translateY(-3px);box-shadow:0 12px 32px var(--glow);border-color:var(--accent)}
+.cico{font-size:1.25rem}
+.clbl{font-size:.7rem;color:var(--text3);font-family:'DM Mono',monospace;letter-spacing:.06em;display:block;margin-bottom:.15rem}
+.cval{font-size:.88rem;font-weight:600;color:var(--text)}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);
+  padding:1.8rem clamp(1.5rem,5vw,4rem);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.fcopy{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--text3);letter-spacing:.06em}
+.fbrand{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:var(--accent)}
+
+@media(max-width:768px){
+  .nav-links,.btn-hire{display:none}
+  .burger{display:flex}
+  .edu-card{flex-direction:column;gap:1rem}
+  .hname{font-size:clamp(2.8rem,13vw,5rem)}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">VG.</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-r">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+    <a href="mailto:vadhanganji2409@gmail.com" class="btn-hire">Hire Me</a>
+    <div class="burger" onclick="toggleMob()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="#skills" onclick="toggleMob()">Skills</a>
+  <a href="#projects" onclick="toggleMob()">Projects</a>
+  <a href="#experience" onclick="toggleMob()">Experience</a>
+  <a href="#education" onclick="toggleMob()">Education</a>
+  <a href="#contact" onclick="toggleMob()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="orb o1"></div><div class="orb o2"></div>
+  <div class="badge"><span class="bdot"></span>Open to Internships &amp; Collaborations</div>
+
+  <div class="hero-photo-area">
+    <div class="photo-ring" id="photoRing" onclick="document.getElementById('photo-inp').click()">
+      <svg id="photoSvg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="var(--accent)" stroke-width="1.4">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/>
+      </svg>
+      <span class="upload-hint">Upload Photo</span>
+    </div>
+    <input type="file" id="photo-inp" accept="image/*" onchange="loadPhoto(event)"/>
+  </div>
+
+  <div class="hname">Vadhan<br/><span class="stroke">Ganji</span></div>
+  <div class="htitle">AI / ML Engineer</div>
+  <p class="hbio">I am Vadhan Ganji, an aspiring AI &amp; Machine Learning Engineer passionate about building intelligent solutions through data. Continuously developing skills in machine learning, data analysis, and AI technologies to solve real-world problems.</p>
+  <div class="hbtns">
+    <a href="#projects" class="btn-p">View Projects →</a>
+    <a href="#contact" class="btn-g">Get In Touch</a>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><div class="scl"></div></div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="skills-sec">
+  <div class="skills-hdr reveal">
+    <div class="stag">// 01. Expertise</div>
+    <h2 class="stitle">Skills &amp; Tech Stack</h2>
+    <p class="ssub">From Python fundamentals to cutting-edge LLMs — here's my full toolkit.</p>
+  </div>
+  <div class="cats-grid">
+
+    <div class="cat-card reveal">
+      <div class="cat-head">
+        <span class="cat-icon">🐍</span>
+        <h3>Python & Core Libraries</h3>
+      </div>
+      <div class="tags">
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt=""/>Python</span>
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" alt=""/>NumPy</span>
+        <span class="tag">🐼 Pandas</span>
+        <span class="tag">📊 Matplotlib</span>
+        <span class="tag">🔧 OOP</span>
+        <span class="tag">🌐 REST APIs</span>
+        <span class="tag">📁 File I/O</span>
+      </div>
+    </div>
+
+    <div class="cat-card reveal">
+      <div class="cat-head">
+        <span class="cat-icon">🤖</span>
+        <h3>Machine Learning</h3>
+      </div>
+      <div class="tags">
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scikitlearn/scikitlearn-original.svg" alt=""/>Scikit-learn</span>
+        <span class="tag">📈 Supervised Learning</span>
+        <span class="tag">🔍 Unsupervised Learning</span>
+        <span class="tag">⚖️ Model Evaluation</span>
+        <span class="tag">🔬 Feature Engineering</span>
+        <span class="tag">🔀 Cross-Validation</span>
+      </div>
+    </div>
+
+    <div class="cat-card reveal">
+      <div class="cat-head">
+        <span class="cat-icon">🧠</span>
+        <h3>Deep Learning</h3>
+      </div>
+      <div class="tags">
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg" alt=""/>PyTorch</span>
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" alt=""/>TensorFlow</span>
+        <span class="tag">🕸️ Neural Networks</span>
+        <span class="tag">👁️ CNNs</span>
+        <span class="tag">🔁 RNNs &amp; LSTMs</span>
+        <span class="tag">📉 Backpropagation</span>
+      </div>
+    </div>
+
+    <div class="cat-card reveal">
+      <div class="cat-head">
+        <span class="cat-icon">💬</span>
+        <h3>NLP &amp; LLMs</h3>
+      </div>
+      <div class="tags">
+        <span class="tag">🤗 Hugging Face</span>
+        <span class="tag">🔗 LangChain</span>
+        <span class="tag">🦙 LlamaIndex</span>
+        <span class="tag">🧩 Transformers</span>
+        <span class="tag">📝 BERT / GPT</span>
+        <span class="tag">✍️ Prompt Engineering</span>
+        <span class="tag">🔤 Tokenization</span>
+        <span class="tag">📐 Embeddings</span>
+      </div>
+    </div>
+
+    <div class="cat-card reveal">
+      <div class="cat-head">
+        <span class="cat-icon">🌐</span>
+        <h3>Web Fundamentals</h3>
+      </div>
+      <div class="tags">
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt=""/>HTML5</span>
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt=""/>CSS3</span>
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt=""/>JavaScript</span>
+        <span class="tag">📱 Responsive Design</span>
+        <span class="tag">🎨 DOM Manipulation</span>
+      </div>
+    </div>
+
+    <div class="cat-card reveal">
+      <div class="cat-head">
+        <span class="cat-icon">🛠️</span>
+        <h3>Tools &amp; Platforms</h3>
+      </div>
+      <div class="tags">
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt=""/>Git</span>
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt=""/>GitHub</span>
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg" alt=""/>Jupyter</span>
+        <span class="tag">🔬 Google Colab</span>
+        <span class="tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt=""/>VS Code</span>
+        <span class="tag">🐳 Docker (Learning)</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="reveal">
+    <div class="stag">// 02. Work</div>
+    <h2 class="stitle">Projects</h2>
+    <p class="ssub">Hands-on projects across the full AI/ML stack. Update with your real GitHub repos.</p>
+  </div>
+  <div class="proj-grid">
+    <div class="pcard reveal">
+      <div class="pnum">01 — Data Science</div>
+      <h3>EDA & Data Analysis Pipeline</h3>
+      <p>End-to-end exploratory data analysis using Pandas and Matplotlib. Cleaned messy datasets, engineered features, and visualized insights to uncover hidden patterns.</p>
+      <div class="pfoot">
+        <span class="plang"><span class="ldot"></span>Python / Pandas</span>
+        <a href="https://github.com/vadhan123" target="_blank" class="plink">GitHub →</a>
+      </div>
+    </div>
+    <div class="pcard reveal">
+      <div class="pnum">02 — Machine Learning</div>
+      <h3>ML Classification Suite</h3>
+      <p>Compared multiple classifiers (SVM, Random Forest, Logistic Regression) with Scikit-learn. Achieved high accuracy using cross-validation and hyperparameter tuning.</p>
+      <div class="pfoot">
+        <span class="plang"><span class="ldot"></span>Python / Scikit-learn</span>
+        <a href="https://github.com/vadhan123" target="_blank" class="plink">GitHub →</a>
+      </div>
+    </div>
+    <div class="pcard reveal">
+      <div class="pnum">03 — Deep Learning</div>
+      <h3>Neural Network from Scratch</h3>
+      <p>Built a fully connected neural network using only NumPy — implementing forward pass, backpropagation, gradient descent, and activation functions manually.</p>
+      <div class="pfoot">
+        <span class="plang"><span class="ldot"></span>Python / NumPy</span>
+        <a href="https://github.com/vadhan123" target="_blank" class="plink">GitHub →</a>
+      </div>
+    </div>
+    <div class="pcard reveal">
+      <div class="pnum">04 — Computer Vision</div>
+      <h3>Image Classifier with CNN</h3>
+      <p>Convolutional neural network for image classification using PyTorch with data augmentation and transfer learning from a pre-trained ResNet backbone.</p>
+      <div class="pfoot">
+        <span class="plang"><span class="ldot"></span>PyTorch</span>
+        <a href="https://github.com/vadhan123" target="_blank" class="plink">GitHub →</a>
+      </div>
+    </div>
+    <div class="pcard reveal">
+      <div class="pnum">05 — NLP</div>
+      <h3>Sentiment Analyzer (BERT)</h3>
+      <p>Fine-tuned a BERT model via Hugging Face Transformers for sentiment classification. Built a tokenization pipeline and achieved strong performance on a custom dataset.</p>
+      <div class="pfoot">
+        <span class="plang"><span class="ldot"></span>Python / HuggingFace</span>
+        <a href="https://github.com/vadhan123" target="_blank" class="plink">GitHub →</a>
+      </div>
+    </div>
+    <div class="pcard reveal">
+      <div class="pnum">06 — AI App</div>
+      <h3>LLM Chatbot with LangChain</h3>
+      <p>An intelligent chatbot using LangChain and a GPT-based LLM with conversation memory, prompt engineering, and a clean Python interface for contextual Q&amp;A.</p>
+      <div class="pfoot">
+        <span class="plang"><span class="ldot"></span>Python / LangChain</span>
+        <a href="https://github.com/vadhan123" target="_blank" class="plink">GitHub →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="exp-sec">
+  <div class="reveal">
+    <div class="stag">// 03. Journey</div>
+    <h2 class="stitle">Learning Experience</h2>
+    <p class="ssub">Building a strong AI/ML foundation stage by stage.</p>
+  </div>
+  <div class="timeline">
+    <div class="titem reveal">
+      <div class="tdate">Stage 1–2 · Foundations</div>
+      <div class="trole">Python & Data Science</div>
+      <div class="tco">Self-Learning · freeCodeCamp, CS50P, Google Colab</div>
+      <ul>
+        <li>Mastered Python for data science — NumPy, Pandas, Matplotlib, OOP, REST APIs, File I/O</li>
+        <li>Performed exploratory data analysis and feature engineering on real-world datasets</li>
+        <li>Built multiple data visualization projects to communicate findings effectively</li>
+      </ul>
+    </div>
+    <div class="titem reveal">
+      <div class="tdate">Stage 3 · Core ML</div>
+      <div class="trole">Machine Learning Engineer (Learning)</div>
+      <div class="tco">Andrew Ng ML Specialization · Coursera · Kaggle</div>
+      <ul>
+        <li>Implemented supervised (Regression, SVM, Random Forest) and unsupervised (K-Means, PCA) algorithms</li>
+        <li>Evaluated models using cross-validation, confusion matrix, ROC-AUC, and F1 score</li>
+        <li>Competed in Kaggle challenges applying end-to-end ML pipelines</li>
+      </ul>
+    </div>
+    <div class="titem reveal">
+      <div class="tdate">Stage 4 · Deep Learning</div>
+      <div class="trole">Deep Learning Practitioner</div>
+      <div class="tco">fast.ai · deeplearning.ai · PyTorch / TensorFlow</div>
+      <ul>
+        <li>Built neural networks from scratch using NumPy and PyTorch — CNNs, RNNs, LSTMs</li>
+        <li>Applied transfer learning with pre-trained models for computer vision tasks</li>
+        <li>Understood backpropagation, gradient descent, and regularization techniques deeply</li>
+      </ul>
+    </div>
+    <div class="titem reveal">
+      <div class="tdate">Stage 5 · Current Focus</div>
+      <div class="trole">NLP & AI Engineering</div>
+      <div class="tco">Hugging Face · LangChain · LlamaIndex</div>
+      <ul>
+        <li>Fine-tuning BERT and GPT-based models on custom datasets using Hugging Face Transformers</li>
+        <li>Building LLM-powered applications with LangChain — RAG pipelines, prompt engineering, memory</li>
+        <li>Studying transformer architectures, attention mechanisms, and tokenization strategies</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="reveal">
+    <div class="stag">// 04. Academic</div>
+    <h2 class="stitle">Education</h2>
+  </div>
+  <div class="edu-card reveal">
+    <div class="eico">🎓</div>
+    <div>
+      <div class="edeg">B.Tech — Computer Science &amp; Engineering (AI/ML Specialization)</div>
+      <div class="esc">SR University, Warangal, Telangana</div>
+      <div class="eyr">2024 – 2028 · Expected Graduation: 2028</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="con-sec">
+  <div class="reveal">
+    <div class="stag">// 05. Connect</div>
+    <h2 class="stitle">Get In Touch</h2>
+    <p class="ssub">Open to internships, research collaborations, and AI/ML projects. Let's build something intelligent.</p>
+  </div>
+  <div class="cg reveal">
+    <a href="mailto:vadhanganji2409@gmail.com" class="ccard">
+      <span class="cico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+         alt="Gmail"
+         style="width:24px;height:24px;"></span>
+      <div><span class="clbl">Email</span><span class="cval">vadhanganji2409@gmail.com</span></div>
+    </a>
+    <a href="https://linkedin.com/in/vadhan-ganji" target="_blank" class="ccard">
+      <span class="cico"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg"
+         alt="LinkedIn"
+         style="width:24px;height:24px;"></span>
+      <div><span class="clbl">LinkedIn</span><span class="cval">linkedin.com/in/vadhan-ganji</span></div>
+    </a>
+    <a href="https://github.com/vadhan123" target="_blank" class="ccard">
+      <span class="cico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+         alt="GitHub"
+         style="width:24px;height:24px;filter:invert(1);"></span>
+      <div><span class="clbl">GitHub</span><span class="cval">github.com/vadhan123</span></div>
+    </a>
+    <div class="ccard" style="cursor:default">
+      <span class="cico">📍</span>
+      <div><span class="clbl">Location</span><span class="cval">Warangal, Telangana, India</span></div>
+    </div>
+  </div>
+  <a href="mailto:vadhanganji2409@gmail.com" class="btn-p reveal" style="display:inline-block">Say Hello →</a>
+</section>
+
+<footer>
+  <div class="fcopy">© 2025 Vadhan Ganji · AI/ML Engineer · Warangal, India</div>
+  <div class="fbrand">VG.</div>
+</footer>
+
+<script>
+function toggleTheme(){
+  const h=document.documentElement,dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('themeBtn').textContent=dark?'☀️':'🌙';
+}
+function toggleMob(){document.getElementById('mobMenu').classList.toggle('open')}
+function loadPhoto(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const ring=document.getElementById('photoRing');
+    ring.innerHTML=`<img src="${ev.target.result}" style="width:136px;height:136px;border-radius:50%;object-fit:cover" onclick="document.getElementById('photo-inp').click()"/>`;
+  };r.readAsDataURL(f);
+}
+// Scroll reveal
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+// Active nav
+const secs=document.querySelectorAll('section[id]'),nls=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-80)cur=s.id});
+  nls.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+cur)});
+});
+
+// Fix dark github icon for light mode
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.querySelectorAll('img[alt=""]').forEach(img=>{
+    if(img.src.includes('github-original'))img.style.filter=dark?'invert(1)':'none';
+  });
+});
+</script>
+</body>
+</html>
